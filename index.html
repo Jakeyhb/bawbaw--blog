@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anthropic 连放两个大招 | 科技简读</title>
+  <style>
+    :root {
+      --bg: #0f0f13;
+      --surface: #17171e;
+      --border: #2a2a38;
+      --accent: #7c6dfa;
+      --accent2: #e96ff0;
+      --text: #e8e8f0;
+      --muted: #888899;
+      --tag-bg: #1e1e2c;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky; top: 0;
+      backdrop-filter: blur(16px);
+      background: rgba(15,15,19,.85);
+      z-index: 10;
+    }
+    .header-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav-date { font-size: 13px; color: var(--muted); }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 780px;
+      margin: 60px auto 0;
+      padding: 0 24px;
+    }
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: .3px;
+    }
+    .tag.hot { border-color: var(--accent); color: var(--accent); }
+    .date-chip { font-size: 13px; color: var(--muted); }
+
+    h1 {
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 800;
+      line-height: 1.3;
+      letter-spacing: -.5px;
+      margin-bottom: 20px;
+    }
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 40px;
+    }
+
+    /* ── Lead card ── */
+    .lead-card {
+      background: linear-gradient(135deg, rgba(124,109,250,.12), rgba(233,111,240,.08));
+      border: 1px solid rgba(124,109,250,.3);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 56px;
+      font-size: 17px;
+      line-height: 1.9;
+    }
+    .lead-card strong { color: #fff; }
+
+    /* ── Timeline ── */
+    .timeline {
+      display: flex;
+      gap: 0;
+      margin-bottom: 56px;
+    }
+    .tl-item {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 22px;
+      background: var(--surface);
+      transition: border-color .2s;
+    }
+    .tl-item:hover { border-color: var(--accent); }
+    .tl-item + .tl-item { margin-left: 16px; }
+    .tl-date { font-size: 12px; color: var(--accent); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .tl-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .tl-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+    /* ── Article body ── */
+    .article {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .section { margin-bottom: 60px; }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 24px;
+      padding-left: 16px;
+      border-left: 3px solid var(--accent);
+      line-height: 1.4;
+    }
+
+    p {
+      font-size: 16px;
+      color: #ccccd8;
+      margin-bottom: 18px;
+      line-height: 1.9;
+    }
+    p strong { color: #fff; }
+
+    /* ── Feature cards ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 28px 0;
+    }
+    @media(max-width:560px) { .feature-grid { grid-template-columns: 1fr; } }
+
+    .feat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .feat-icon { font-size: 28px; margin-bottom: 10px; }
+    .feat-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .feat-body { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* ── Security layers ── */
+    .layers {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    .layers-title { font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 16px; }
+    .layer-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .layer-row:last-child { margin-bottom: 0; }
+    .layer-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .layer-text { font-size: 14px; color: #ccccd8; padding-top: 4px; }
+    .layer-text strong { color: #fff; }
+
+    /* ── Highlight quote ── */
+    .quote {
+      border-left: 3px solid var(--accent2);
+      background: rgba(233,111,240,.06);
+      border-radius: 0 12px 12px 0;
+      padding: 20px 24px;
+      margin: 28px 0;
+      font-size: 16px;
+      color: #ddd;
+      font-style: italic;
+      line-height: 1.8;
+    }
+
+    /* ── Architecture insight ── */
+    .arch-box {
+      background: #12121a;
+      border: 1px solid rgba(124,109,250,.25);
+      border-radius: 14px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    .arch-box .arch-label {
+      font-size: 12px; color: var(--accent); font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .arch-box p { color: #bbbbc8; font-size: 15px; margin: 0; }
+    .arch-box p strong { color: #fff; }
+
+    /* ── Comparison table ── */
+    .compare {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 28px 0;
+      font-size: 14px;
+    }
+    .compare th {
+      background: var(--tag-bg);
+      color: var(--muted);
+      font-weight: 600;
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      color: #ccccd8;
+    }
+    .compare tr:last-child td { border-bottom: none; }
+    .compare td:first-child { color: #fff; font-weight: 600; }
+
+    /* ── Summary box ── */
+    .summary {
+      background: linear-gradient(135deg, rgba(124,109,250,.12), rgba(233,111,240,.08));
+      border: 1px solid rgba(124,109,250,.3);
+      border-radius: 16px;
+      padding: 32px;
+      margin-top: 48px;
+    }
+    .summary-title { font-size: 18px; font-weight: 800; margin-bottom: 16px; color: #fff; }
+    .summary ul { list-style: none; }
+    .summary li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      font-size: 15px;
+      color: #ccccd8;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .summary li:last-child { border-bottom: none; }
+    .summary li::before { content: "→"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ── Responsive ── */
+    @media(max-width:600px) {
+      .timeline { flex-direction: column; }
+      .tl-item + .tl-item { margin-left: 0; margin-top: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <span class="logo">科技简读</span>
+    <span class="nav-date">2025 年 3 月 25 日</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="meta-row">
+    <span class="tag hot">🔥 热点</span>
+    <span class="tag">AI</span>
+    <span class="tag">Anthropic</span>
+    <span class="tag">Claude</span>
+    <span class="date-chip">作者：五月君 · Nodejs技术栈</span>
+  </div>
+
+  <h1>Anthropic 连放两个大招：<br/>昨天接管你的电脑，<em>今天甩掉你的审批</em></h1>
+  <p class="subtitle">48 小时内，两个重磅功能上线。Anthropic 正在有意识地把 AI 从「听指挥干活」变成「自己判断着干活」。</p>
+
+  <div class="lead-card">
+    3 月 24 日，Claude Desktop 上线 <strong>Computer Use</strong>，让 AI 直接操控鼠标和键盘，能干你坐在桌前能干的所有事。<br/><br/>
+    3 月 25 日，Claude Code 推出 <strong>Auto Mode</strong>，AI 写代码时不再每个操作都来问你「行不行」，自己判断安全性，自己执行。<br/><br/>
+    放在一起看，这不只是两个功能更新——而是 Anthropic 在同一个方向上<strong>踩了两脚油门</strong>。
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">Mar 24</div>
+      <div class="tl-title">Computer Use</div>
+      <div class="tl-desc">Claude Desktop 获得桌面控制能力，鼠标、键盘、任意 App 全面接管。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Mar 25</div>
+      <div class="tl-title">Auto Mode</div>
+      <div class="tl-desc">Claude Code 引入自主决策，AI 自己审查操作合法性，不再每步来问你。</div>
+    </div>
+  </div>
+</div>
+
+<div class="article">
+
+  <!-- ── Section 1 ── -->
+  <div class="section">
+    <h2>Computer Use：从文件助手到桌面操控</h2>
+
+    <p>在 Computer Use 之前，Claude Desktop 的 Cowork 模式已经能帮你读写文件、做表格、写报告。但它有一个明显的边界：<strong>只能动文件系统里的东西</strong>。让它查个网页、在某个桌面 App 里点几下、或者打开 Excel 填个数据，它就只能摊手。</p>
+
+    <p>Computer Use 打破了这个边界。Claude 现在可以截取屏幕来「看」当前状态，然后通过控制鼠标和键盘操作任何应用程序。技术策略很务实：<strong>优先走 API 集成</strong>（比如已接入的 Slack、Calendar），只有没有 API 可用时才退回到屏幕操控这种「兜底方案」。</p>
+
+    <div class="feature-grid">
+      <div class="feat-card">
+        <div class="feat-icon">👁️</div>
+        <div class="feat-title">截屏感知</div>
+        <div class="feat-body">Claude 截取当前桌面状态，理解「现在屏幕上有什么」。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🖱️</div>
+        <div class="feat-title">鼠标键盘控制</div>
+        <div class="feat-body">直接操控光标、输入文字，任意 App 均可操作。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📱</div>
+        <div class="feat-title">Dispatch 远程派单</div>
+        <div class="feat-body">手机发一句话，Claude 在你电脑上默默把活做完，进会议室时已经完成。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🔌</div>
+        <div class="feat-title">API 优先策略</div>
+        <div class="feat-body">有 API 就走 API，没有才用屏幕操控，减少无意义的截图开销。</div>
+      </div>
+    </div>
+
+    <p>最有想象力的场景是配合手机端的 Dispatch 功能。你在外面用手机发「帮我把那个 PPT 导出成 PDF，附到下午两点的会议邀请里」，Claude 就在你电脑上默默完成了所有操作。等你走到会议室，活已经做好了。</p>
+
+    <div class="layers">
+      <div class="layers-title">三层安全防护</div>
+      <div class="layer-row">
+        <div class="layer-num">1</div>
+        <div class="layer-text"><strong>手动开启确认</strong>：功能默认关闭，用户主动启用</div>
+      </div>
+      <div class="layer-row">
+        <div class="layer-num">2</div>
+        <div class="layer-text"><strong>逐个 App 授权</strong>：每个应用单独赋权，不打包给</div>
+      </div>
+      <div class="layer-row">
+        <div class="layer-num">3</div>
+        <div class="layer-text"><strong>权限粒度设置</strong>：每个 App 可选「完全控制」或「仅查看」，操作期间其他窗口隐藏</div>
+      </div>
+    </div>
+
+    <p style="font-size:14px;color:var(--muted)">⚠️ 目前仅限 macOS，Pro 和 Max 用户可用，标注为 Research Preview。</p>
+  </div>
+
+  <!-- ── Section 2 ── -->
+  <div class="section">
+    <h2>Auto Mode：用 AI 审查 AI</h2>
+
+    <p>用过 Claude Code 的人都知道默认模式的痛点：每个文件写入、每条 shell 命令都要手动确认，跑一个大任务可能要按上百次「允许」。之前的「解放方案」是 <code style="background:#1e1e2c;padding:2px 6px;border-radius:4px;font-size:13px">--dangerously-skip-permissions</code>，但连名字都在警告你：你在冒险。</p>
+
+    <div class="quote">
+      自动模式的做法是引入一个独立的分类器模型（固定使用 Sonnet 4.6），在每个操作执行前做语义级的安全审查。这个分类器不是简单的规则匹配，它分析用户的意图和 Claude 想执行的操作，判断有没有超出任务范围，有没有被恶意内容「带偏」的迹象。
+    </div>
+
+    <p>安全的操作<strong>自动放行</strong>，危险的操作<strong>自动拦截</strong>。被拦截后 Claude 不会卡住，而是换一种方式继续干活。</p>
+
+    <div class="arch-box">
+      <div class="arch-label">架构亮点</div>
+      <p><strong>工具执行的结果不会发送给分类器。</strong>即使 Claude 读取了一个精心构造的恶意文件，文件内容也无法影响分类器的判断。分类器只看「用户说了什么」和「Claude 想做什么」，不看「Claude 看到了什么」。这从架构上切断了 prompt injection 影响安全决策的路径。</p>
+    </div>
+
+    <div class="layers">
+      <div class="layers-title">三层决策链</div>
+      <div class="layer-row">
+        <div class="layer-num">1</div>
+        <div class="layer-text"><strong>预设规则</strong>：已知安全/危险模式直接分类</div>
+      </div>
+      <div class="layer-row">
+        <div class="layer-num">2</div>
+        <div class="layer-text"><strong>自动放行</strong>：通过规则的操作直接执行，不打扰用户</div>
+      </div>
+      <div class="layer-row">
+        <div class="layer-num">3</div>
+        <div class="layer-text"><strong>分类器审查</strong>：模糊地带交给 Sonnet 4.6 做语义判断，连续误判则自动降级回手动模式</div>
+      </div>
+    </div>
+
+    <p style="font-size:14px;color:var(--muted)">⚠️ 目前仅限 Team 计划用户，Enterprise 和 API 即将跟进。</p>
+  </div>
+
+  <!-- ── Section 3 ── -->
+  <div class="section">
+    <h2>放在一起看：同一个方向，两脚油门</h2>
+
+    <p>两个更新背后有一个清晰的共性：<strong>都在扩大 Claude 的自主行动范围，同时用分层的安全机制来兜底。</strong></p>
+
+    <table class="compare">
+      <tr>
+        <th>维度</th>
+        <th>Computer Use</th>
+        <th>Auto Mode</th>
+      </tr>
+      <tr>
+        <td>扩大的是</td>
+        <td>操作空间（整个桌面）</td>
+        <td>决策空间（自主判断执行）</td>
+      </tr>
+      <tr>
+        <td>限制机制</td>
+        <td>手动开启 → App 授权 → 权限粒度</td>
+        <td>预设规则 → 放行 → 分类器审查</td>
+      </tr>
+      <tr>
+        <td>安全思路</td>
+        <td>多层权限收敛</td>
+        <td>独立模型互不信任</td>
+      </tr>
+      <tr>
+        <td>当前限制</td>
+        <td>仅 macOS，Pro/Max</td>
+        <td>仅 Team，Enterprise 待来</td>
+      </tr>
+    </table>
+
+    <p>两者的安全思路惊人地一致：<strong>不信任单一环节，用多层检查来降低风险。</strong></p>
+
+    <p>Anthropic 显然在有意识地推进一个更大的叙事：AI 不再只是一个等你输入指令的工具，而是一个能在你不在场时独立工作的代理。Computer Use 让它有了「手脚」，Auto Mode 让它有了「判断力」，Dispatch 让你可以远程「派任务」。三者组合起来，一个能自主行动的 AI 工作伙伴的轮廓已经相当清晰了。</p>
+  </div>
+
+  <!-- ── Summary ── -->
+  <div class="summary">
+    <div class="summary-title">核心要点速览</div>
+    <ul>
+      <li>Computer Use 让 Claude 接管整个桌面，不只是文件系统</li>
+      <li>Auto Mode 引入独立分类器，在不问用户的情况下自主决策</li>
+      <li>分类器只看「意图和操作」，不看「执行结果」，从架构上防 prompt injection</li>
+      <li>两个功能的安全设计思路一致：多层检查，不信任单一环节</li>
+      <li>配合 Dispatch，你在外面用手机发任务，回来活就做完了</li>
+      <li>Anthropic 的方向很清晰：从「听指挥」到「自主代理」</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  原文来自 <a href="https://mp.weixin.qq.com/s/6imn3PTdptGXmPvrpCVYYA" target="_blank">Nodejs技术栈 · 五月君</a>，经整理重排。
+</footer>
+
+</body>
+</html>
